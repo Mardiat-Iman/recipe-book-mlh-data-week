@@ -2,9 +2,10 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import streamlit as st
+from urllib.parse import quote_plus #This allows you to basically escape the secrets credential. 
 
-username = st.secrets["mongo"]["username"]
-password = st.secrets["mongo"]["password"]
+username = quote_plus(st.secrets["mongo"]["username"])
+password = quote_plus(st.secrets["mongo"]["password"])
 cluster_url = st.secrets["mongo"]["cluster_url"]
 #f is to format the text
 uri = f"mongodb+srv://{username}:{password}@{cluster_url}/?retryWrites=true&w=majority&appName=Cluster0"
