@@ -2,13 +2,21 @@ import streamlit as st
 
 st.set_page_config(page_title="Home")
 
-#title
+#Header
 st.title("Recipe Book Project")
-#Divider
-st.divider()
+st.subheader("Discover, generate and store recipes")
+
 #image
 st.image("assets/recipeimage.jpg", use_container_width=True)   
 
-st.text("This is a recipe book to generate recipes using AI")
+#Intro
+st.markdown("## Welcome to your Recipe Book")
+st.text("This is a recipe book to generate recipes using AI. Record recipes you'll love to try again.")
 
-st.subheader("Learn how to generate recipes")
+#Divider
+st.divider()
+
+
+# Footer
+st.markdown("---")
+st.markdown("Made with Streamlit")

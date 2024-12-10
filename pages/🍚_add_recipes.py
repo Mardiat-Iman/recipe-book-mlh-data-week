@@ -1,4 +1,17 @@
 import streamlit as st
+from urllib.parse import quote_plus
+from pymongo import MongoClient
+
+username = quote_plus(st.secrets["mongo"]["username"])
+password = quote_plus(st.secrets["mongo"]["password"])
+cluster_url = st.secrets["mongo"]["cluster_url"]
+
+uri = f"mongodb+srv://{username}:{password}@{cluster_url}/?retryWrites=true&w=majority&appName=Cluster0"
+
+client = MongoClient(uri)
+
+db = client['recipe-book']
+collection = db['recipes']
 
 st.title("Add a new dish!!")
 
@@ -14,3 +27,9 @@ if st.button("Send recipe"): #creates a button and checks if its clicked
         st.success("Recipe was sent correctly")
     else:
         st.error("Please fill the missing fields")  
+
+
+
+#footer
+st.markdown("---")   
+st.markdown("Made using Streamlit")      
