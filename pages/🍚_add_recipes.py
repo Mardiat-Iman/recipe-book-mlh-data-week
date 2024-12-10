@@ -23,7 +23,19 @@ difficulty = st.selectbox("Difficulty", ['Easy', 'Medium', 'Hard']) #Allows user
 image = st.file_uploader("Upload an image", type=['jpg', 'png', 'jpeg']) #Allow user to upload a file  
 
 if st.button("Send recipe"): #creates a button and checks if its clicked
-    if recipe_name and ingredients and instructions:                                
+    if recipe_name and ingredients and instructions and cook_time and difficulty:   
+        image_data = image.read()   if image else None
+
+        recipe = {          # this is basically what the user will input and the info goes into the mongo cluster
+            "name": recipe_name,
+            "ingredients": ingredients,
+            "instructions": instructions,
+            "cook_time": cook_time,
+            "difficulty": difficulty,
+            "image": image_data
+        }  
+
+        collection.insert_one(recipe)     #basically inserting the above document                    
         st.success("Recipe was sent correctly")
     else:
         st.error("Please fill the missing fields")  

@@ -29,20 +29,20 @@ search_query = st.text_input("Search for recipe by name or ingredient")
 if st.button("Search"):
    query = {}
    if search_query:   #checking if the search query has information/what the user uploaded
-      query['$or'] = [            #If contains x , i want to fetch x
-         {"name": {"$regex": search_query, "$options": "i"}}, #Adding the diff fields, I want to mke the query filter. Name is the key and the value is whatever info is in my search query.
-         {"ingredients": {"$regex": search_query, "$options": "i"}}
-      ]
-      st.write({search_query})
+       query['$or'] = [            #If contains x , i want to fetch x
+           {"name": {"$regex": search_query, "$options": "i"}}, #Adding the diff fields, I want to mke the query filter. Name is the key and the value is whatever info is in my search query.
+           {"ingredients": {"$regex": search_query, "$options": "i"}}
+       ]
+       st.write({search_query})
     
    else:
       st.error("Please enter a search query")
 
    recipes = list(collection.find(query, {"_id": 0, "name": 1, "image": 1, "ingredients": 1, "instructions": 1, "cook_time": 1, "difficulty": 1}))
    if recipes: #checking if recipe list has info
-      for recipe in recipes:
-         st.write(recipe['name'])
-         st.write(recipe['ingredients'])
+       for recipe in recipes:
+           st.write(recipe['name'])
+           st.write(recipe['ingredients'])
       
       
       
