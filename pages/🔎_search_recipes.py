@@ -33,7 +33,8 @@ if st.button("Search"):
            {"name": {"$regex": search_query, "$options": "i"}}, #Adding the diff fields, I want to mke the query filter. Name is the key and the value is whatever info is in my search query.
            {"ingredients": {"$regex": search_query, "$options": "i"}}
        ]
-       st.write({search_query})
+       st.write(f"Searching for recipes with: {search_query}")
+
     
    else:
       st.error("Please enter a search query")

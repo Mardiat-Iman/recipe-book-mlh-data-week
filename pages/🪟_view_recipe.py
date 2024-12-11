@@ -44,7 +44,7 @@ for i in range(0, len(recipes), 2):
             image_base64 = get_image_base64(recipe["image"])
             st.markdown(f"""
                 <div style="border: 1px solid #ddd; padding: 10px; border-radius: 10px;">
-                    <img src="data:image/jpg;base64, {image_base64}" alt="{recipe["name"]}" style="width:100%; border-radius: 10px;">
+                    <img src="data:image/jpg;base64, {image_base64}" alt="{recipe["name"]}" style="width:100%; height: 200px; border-radius: 10px;">
                     <h3 style="text-align: center;">{recipe["name"]}</h3>
                 </div>
             """, unsafe_allow_html=True)
