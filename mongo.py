@@ -1,4 +1,4 @@
-#pings our database to make sure we are ready to get info from there
+
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import streamlit as st
