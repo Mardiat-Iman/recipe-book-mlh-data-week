@@ -1,0 +1,83 @@
+import streamlit as st
+from urllib.parse import quote_plus
+from pymongo import MongoClient
+import torch
+from transformers import BertTokenizer, BertModel
+import numpy as np
+from num2words import num2words
+
+username = quote_plus(st.secrets["mongo"]["username"])
+password = quote_plus(st.secrets["mongo"]["password"])
+cluster_url = st.secrets["mongo"]["cluster_url"]
+
+uri = f"mongodb+srv://{username}:{password}@{cluster_url}/?retryWrites=true&w=majority&appName=Cluster0"
+
+client = MongoClient(uri)
+
+db = client['sample-recipe']
+collection = db['recipes-2']
+
+#Create embeddings by stating model and tokenizer which are from BERT hugging face
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased') #the bert model being used
+model = BertModel.from_pretrained('bert-base-uncased')
+
+#converting numbers to words
+def convert_numbers_to_words(text):
+    words = text.split()  # Split text into words
+    for i, word in enumerate(words):
+        if word.isdigit():  # Check if the word is a number
+            words[i] = num2words(int(word))  # Convert the number to words
+    return ' '.join(words)  # Rejoin words back into a string
+
+#to convert text responses into embeddings
+def generate_embeddings(text):
+    inputs = tokenizer(text, return_tensors='pt', padding=True, truncation=True) #responses to the form, pt is pytorch
+    output = model(**inputs)
+    embedding = output.last_hidden_state.mean(dim=1).detach().numpy() #converting from tensorarray to numpy
+    return embedding
+
+st.title("Add a new dish!!")
+
+recipe_name = st.text_input("Recipe Name") #text input is one line
+ingredients = st.text_area("Ingredients") #text area takes up much more spcae so can be used for largechunks of text
+instructions = st.text_area("Instructions")
+difficulty = st.selectbox("Difficulty", ['Easy', 'Medium', 'Hard']) #Allows user select from diff options
+cook_time = st.number_input("Cooking Time", step=1) #hve to specify what our no input will be receiving.
+image = st.file_uploader("Upload an image", type=['jpg', 'png', 'jpeg']) #Allow user to upload a file  
+
+
+if st.button("Send recipe"): #creates a button and checks if its clicked
+    if recipe_name and ingredients and instructions  and difficulty:   
+        cook_time_in_words = convert_numbers_to_words(str(cook_time))  # Convert the cooking time to words
+       
+
+        recipe2 = {          # this is basically what the user will input and the info goes into the mongo cluster
+            "name": recipe_name,
+            "ingredients": ingredients,
+            "instructions": instructions,
+            "difficulty": difficulty,
+            "cook_time": cook_time,
+            "image": image
+    
+        }  
+
+       
+        concatenated_responses = f"{recipe_name} {ingredients} {instructions} {difficulty} {cook_time_in_words}"                 
+        embeddings = generate_embeddings(concatenated_responses)
+        st.write(embeddings)
+        
+        document = {
+            "recipe2": recipe2,
+            "embeddings":embeddings.tolist()
+        }
+        collection.insert_one(document)
+
+        st.success("Recipe was added correctly")
+    else:
+        st.error("Please fill the missing fields")  
+
+
+
+#footer
+st.markdown("---")   
+st.markdown("Made using Streamlit")      
