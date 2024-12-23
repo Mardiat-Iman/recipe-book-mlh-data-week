@@ -7,14 +7,11 @@ st.subheader("Generate recipes based on ingredients you have available.")
 
 # Set your OpenAI API key
 
-openai.api_key = st.secrets[openai]["OPENAI_API_KEY"]
+#openai.api_key = st.secrets[openai]["OPENAI_API_KEY"]
 
 
-# Debugging the secrets
-if "myap" in st.secrets:
-    st.write("API Key loaded successfully!")
-else:
-    st.error("OPENAI_API_KEY not found in secrets!")
+
+
 
 
 system_prompt = "Give me two recipe options based on ingredients the user gives.Only use the ingredients given, feel free to add seasonings if not added by the user."

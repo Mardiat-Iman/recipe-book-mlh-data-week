@@ -1,8 +1,8 @@
 import streamlit as st
 from urllib.parse import quote_plus
 from pymongo import MongoClient
-import torch
 from transformers import BertTokenizer, BertModel
+import torch
 import numpy as np
 from num2words import num2words
 
@@ -57,7 +57,7 @@ if st.button("Send recipe"): #creates a button and checks if its clicked
             "instructions": instructions,
             "difficulty": difficulty,
             "cook_time": cook_time,
-            "image": image
+            #"image": image   Don't want to encode the images
     
         }  
 
