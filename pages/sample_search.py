@@ -70,7 +70,34 @@ if st.button("Send recipe"): #creates a button and checks if its clicked
             "recipe2": recipe2,
             "embeddings":embeddings.tolist()
         }
+        #client["sample-recipe"]["recipe2"].insert_one(document)
         collection.insert_one(document)
+
+        #cosine similarity
+        all_documents = list(collection.find())
+        if all_documents:
+            #A recipe inputted by user is a current embedding (vector1)
+            current_embedding = embeddings.flatten() # .flatten converts to 1D
+            #Store similar recipes from the database
+            similarities = []
+
+            for doc in all_documents: #iterating over all the elements in the document
+                store_embedding = np.array(doc["embeddings"]).flatten()
+                similarity = np.dot(current_embedding, store_embedding) / (np.linalg.norm(current_embedding)) * np.linalg.norm(store_embedding)
+                similarities.append((doc, similarity))
+
+
+                similarities = sorted(similarities, key=lambda x:x[1], reverse=True)
+
+                #Print for our top 3 matches
+                #st.write(similarities)
+                st.subheader("Your top 2 matches")
+                st.divider()
+                for match, similarity in similarities[:2]:
+                    st.write(similarity)
+                    st.write(match["recipe2"])
+
+
 
         st.success("Recipe was added correctly")
     else:
