@@ -5,11 +5,9 @@ import streamlit as st
 st.title("Recipe Generator")
 st.subheader("Generate recipes based on ingredients you have available.")
 
-# Set your OpenAI API key
+# Set OpenAI API key
 
-openai.api_key = st.secrets[openai]["OPENAI_API_KEY"]
-
-
+openai.api_key = st.secrets["openai"]["OPENAI_API_KEY"]
 
 
 
