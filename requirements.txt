@@ -1,4 +1,2 @@
 pymongo
 openai
-transformers
-torch
