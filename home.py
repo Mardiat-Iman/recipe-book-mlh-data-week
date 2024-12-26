@@ -8,7 +8,7 @@ st.subheader("Discover, generate and store recipes")
 
 #image
 #st.image("assets/recipeimage2.jpg", use_container_width=True)   
-st.image("assets/recipeimage.jpg", width=1000 )
+st.image("assets/recipebook.jpg", width=1000 )
 
 
 
@@ -22,10 +22,15 @@ st.divider()
 #Call to Action
 st.markdown("### Get Started")
 st.write("Ready to dive into the world of delicious recipes?")
+
+
 if st.button("Add a New Recipe"):
-    st.write("Navigate to the 'Add Recipe' page to share your culinary creations!")
+    st.page_link("pages/🍚_add_recipes.py", label="Add a New Recipe", icon=None, help=None, disabled=False, use_container_width=True)
+    #st.write("Navigate to the 'Add Recipe' page to share your culinary creations!")
+    
 if st.button("Generate Recipes"):
-    st.write("Navigate to the 'Generate' page to share your culinary creations!")
+    st.page_link("pages/🧞_generator.py", label="Generate Recipes", icon=None, help=None, disabled=False, use_container_width=True)
+    #st.write("Navigate to the 'Generate' page to share your culinary creations!")
 
 st.write("**You can also view your current recipes and search the recipes in this notebook**")
 
