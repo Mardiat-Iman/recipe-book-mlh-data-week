@@ -15,7 +15,7 @@ collection = db['recipes']
 
 
 #Header
-st.title("All your recipes")
+st.title("Search your  recipes")
 
 
 # Sidebar
@@ -43,7 +43,7 @@ if st.button("Search"):
    if recipes: #checking if recipe list has info
        for recipe in recipes:
            st.write(recipe['name'])
-           st.write(recipe['ingredients'])
+           #st.write(recipe['ingredients']) just want it to return only recipe name for now
       
       
       

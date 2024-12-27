@@ -28,15 +28,8 @@ def get_image_base64(binary_image):
     # Proceed with encoding if the image is valid
     return base64.b64encode(binary_image).decode('utf-8')
 
-#making a table 
-# for recipe in recipes:
-#     column = st.columns([1,2]) # 2 columns
-#     with column[0]:
-#         st.image(recipe["image"],width=100)
-#     with column[1]:
-#         st.subheader(recipe["name"])
 
-#grid layout for recipes . Another way to layout the recipes
+#grid layout for recipes
 for i in range(0, len(recipes), 2):
     cols = st.columns(2)
     for col, recipe in zip(cols, recipes[i:i+2]):

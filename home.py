@@ -1,4 +1,18 @@
 import streamlit as st
+from urllib.parse import quote_plus
+from pymongo import MongoClient
+
+#connect to MongoDB
+username = quote_plus(st.secrets["mongo"]["username"])
+password = quote_plus(st.secrets["mongo"]["password"])
+cluster_url = st.secrets["mongo"]["cluster_url"]
+
+uri = f"mongodb+srv://{username}:{password}@{cluster_url}/?retryWrites=true&w=majority&appName=Cluster0"
+
+client = MongoClient(uri)
+
+db = client['recipe-book']
+collection = db['recipes']
 
 st.set_page_config(page_title="Home")
 
@@ -38,31 +52,64 @@ st.write("**You can also view your current recipes and search the recipes in thi
 st.markdown("### Recently added")
 st.write("Your most recent recipes will show here:")
 
+# Query to fetch the two most recent recipes
+recent_recipes = list(collection.find().sort('created_at', -1).limit(2))
+
+
 rows = 1
 columns = 2
 
-# for row in range(rows):
-#     cols = st.columns(columns)
-#     for col_index, col in enumerate(cols):
-#         with col:
-#             container = st.container(border=True)
-#             with container:
-#                 if row == 0 and col_index == 1:
-#                     st.write("🍲 **Recipes**")
-#                     st.write("1. Add new recipes with detailed instructions and images.")
-#                     st.write("2. Browse through a variety of recipes shared by the community.")
-#                     st.write("3. Get personalized recipe recommendations based on your preferences.")
-#                     st.write("4. Rate and review recipes to help others find the best dishes.")
-#                 elif row == 0 and col_index == 0:
-#                     st.write("🍽️ **Add a New Recipe**")
-#                     st.write("1. Share your favorite recipes with the community.")
-#                     st.write("2. Fill out the form with the recipe name, ingredients, and instructions.")
-#                     st.write("3. Upload an image of the dish to make it visually appealing.")
-#                     st.write("4. Submit your recipe and inspire others to try it out.")
-                
+for row in range(rows):
+    cols = st.columns(columns)
+    for col_index, col in enumerate(cols):
+        with col:
+            container = st.container(border=True)
+            with container:
+
+                if row == 0 and col_index == 0:
+                    st.write("🍲 **Latest Recipes**")
+                    for recipe in recent_recipes:
+                        recipe_name = recipe.get('name')
+                        cooking_time = recipe.get('cook_time', 'N/A')  # Default value if not available
+                        difficulty_level = recipe.get('difficulty', 'N/A')  # Default value if not available
+
+                        # Display the recipe details
+                        st.write(f"**{recipe_name}**")
+                        st.write(f"⏱️ Cooking Time: {cooking_time} minutes")
+                        st.write(f"🌟 Difficulty: {difficulty_level}")
+                        st.write("---")
+               
+
+if len(recent_recipes) == 0:
+    st.write("No recent recipes found.")
+else:
+    # Display "Latest Recipes" title
+    st.write("🍲 **Latest Recipes**")
+
+    # Create columns to display each recipe side-by-side in separate "cards"
+    cols = st.columns(2)  # Create two columns for side-by-side display
+
+    # Loop through the recipes and display each in its respective column
+    for i, recipe in enumerate(recent_recipes):
+        recipe_name = recipe.get('name', 'Unnamed Recipe')
+        cooking_time = recipe.get('cook_time', 'N/A')  # Default value if not available
+        difficulty_level = recipe.get('difficulty', 'N/A')  # Default value if not available
+
+        # Use the appropriate column for each recipe (based on the index)
+        with cols[i]:
+            # Create a container for each recipe
+            with st.container():
+                # Display recipe info inside a card-like layout
+                st.write(f"**{recipe_name}**")
+                st.write(f"⏱️ Cooking Time: {cooking_time} minutes")
+                st.write(f"🌟 Difficulty: {difficulty_level}")
+                st.markdown("---")  # Add a horizontal line to separate recipes
+
 
 #Stats/summary preview card
-st.markdown("### Stats/Summary")
+#st.markdown("### Stats/Summary") -don't have enough things recently to add to the stats card.
+#total no of recipes added,
+
 
 
 # Footer

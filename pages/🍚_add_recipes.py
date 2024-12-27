@@ -13,6 +13,7 @@ client = MongoClient(uri)
 db = client['recipe-book']
 collection = db['recipes']
 
+
 st.title("Add a new dish!!")
 
 recipe_name = st.text_input("Recipe Name") #text input is one line
