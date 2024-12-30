@@ -28,7 +28,7 @@ st.image("assets/recipebook.jpg", width=1000 )
 
 #Intro
 st.markdown("## Welcome to your Recipe Book")
-st.text("This is a recipe book where you can record your recipes, generate recipes based on your ingredients and.... ")
+st.text("This is a recipe book where you can record your recipes, generate recipes based on your ingredients and explore a variety of recipes. ")
 
 #Divider
 st.divider()
@@ -55,30 +55,6 @@ st.write("Your most recent recipes will show here:")
 # Query to fetch the two most recent recipes
 recent_recipes = list(collection.find().sort('created_at', -1).limit(2))
 
-
-rows = 1
-columns = 2
-
-for row in range(rows):
-    cols = st.columns(columns)
-    for col_index, col in enumerate(cols):
-        with col:
-            container = st.container(border=True)
-            with container:
-
-                if row == 0 and col_index == 0:
-                    st.write("🍲 **Latest Recipes**")
-                    for recipe in recent_recipes:
-                        recipe_name = recipe.get('name')
-                        cooking_time = recipe.get('cook_time', 'N/A')  # Default value if not available
-                        difficulty_level = recipe.get('difficulty', 'N/A')  # Default value if not available
-
-                        # Display the recipe details
-                        st.write(f"**{recipe_name}**")
-                        st.write(f"⏱️ Cooking Time: {cooking_time} minutes")
-                        st.write(f"🌟 Difficulty: {difficulty_level}")
-                        st.write("---")
-               
 
 if len(recent_recipes) == 0:
     st.write("No recent recipes found.")
