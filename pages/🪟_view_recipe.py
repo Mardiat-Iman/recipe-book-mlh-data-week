@@ -16,6 +16,7 @@ collection = db['recipes']
 
 #Title
 st.title("Visualise your current recipes")
+st.write("The recipes added to your notebook will be shown here")
 
 recipes = list(collection.find({}, {"name": 1, "image": 1}))
 

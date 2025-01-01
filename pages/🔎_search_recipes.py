@@ -42,8 +42,9 @@ if st.button("Search"):
    recipes = list(collection.find(query, {"_id": 0, "name": 1, "image": 1, "ingredients": 1, "instructions": 1, "cook_time": 1, "difficulty": 1}))
    if recipes: #checking if recipe list has info
        for recipe in recipes:
-           st.write(recipe['name'])
-           #st.write(recipe['ingredients']) just want it to return only recipe name for now
+           st.markdown(f"**Name:** {recipe['name']}")
+           st.markdown(f"**Ingredients:**\n{recipe['ingredients']}")
+           st.markdown(f"**Instructions:**\n{recipe['instructions']}")
       
       
       
