@@ -13,6 +13,7 @@ This included:
 - Created a recipe generator using prompt engineering
 
 Note: This project is still being currently updated and refined
+- The generator.py code is incomplete, when I was transfering my projects I missed some vital parts of the code for the generator. This will be corrected soon.
 
 Future Implementation:
 - Deletion of recipes from the user's end.
